@@ -24,16 +24,16 @@ To Use:
 
 When you are done using it you will see the following output structure:
 
-# Final tree looks like
-# /
-#    root
-#    signer
-#    dev1
-#    dev2
-#    deploy
-#       dev1
-#       dev2
-# where the output folder has all the files in the right formats
+Final tree looks like
+/
+   root
+   signer
+   dev1
+   dev2
+   deploy
+      dev1
+      dev2
+where the output folder has all the files in the right formats
 
 File Directory:
 
