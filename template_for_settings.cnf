@@ -1,0 +1,61 @@
+####################################################################################
+# Copyright (c) 2019 - Present Crestron Electronics, Inc.
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+####################################################################################
+
+output_folder=<invalid>
+
+# See cosu_root.sh for policy
+# Root is generated such that it will only allow signing of 
+# certificates in the same country, state, and organization
+ssldef_country="US"
+ssldef_state="NJ"
+ssldef_locality="Rockleigh"
+ssldef_org="COSU Default Org"
+ssldef_org_unit="COSU Default Org Unit"
+ssldef_email="test@example.com"
+ssldef_signer_cn="COSU Signing Cert"
+ssldef_root_cn="COSU Root Cert"
+ssldef_device_hostname="COSU-DEMO-DEVICE"
+ssldef_device_ip="<invalid>"
+
+#bulk_device_list is a CSV file with hostname , IP 
+#IP is optional
+#wildcard hostnames not supported in bulk create
+#example
+#host1, 1.1.1.1
+#host2, 45.45.45.45
+#host3
+bulk_device_list=/home/<invalid>/test
+
+# RSA Keys
+sslkeygen="genrsa"
+sslkeygenparams="-aes256"
+sslkeygennumbits="4096"
+
+sslsha="sha256"
+
+sslrootdays="7300"
+sslintdays="3650"
+sslsrvdays="800"
+
+
+
+
