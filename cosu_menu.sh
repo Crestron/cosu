@@ -50,7 +50,7 @@ show_menus() {
 	echo "1. Create New Root Certificate"
 	echo "2. Create New Intermediate Certificate"
 	echo "3. Create CSR"
-	echo "4. Create Certficate from CSR"
+	echo "4. Create Certificate from CSR"
 	echo "5. Create Certificates from list of hostnames/IPs"
 	echo "d. Turn Debug On/Off"
 	echo "x. Exit"

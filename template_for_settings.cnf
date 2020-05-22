@@ -46,9 +46,8 @@ ssldef_device_ip="<invalid>"
 bulk_device_list=/home/<invalid>/test
 
 # RSA Keys
-sslkeygen="genrsa"
-sslkeygenparams="-aes256"
-sslkeygennumbits="4096"
+keygenparams="-aes-256-cbc -pkeyopt rsa_keygen_bits:2048"
+keyalgorithm="RSA"
 
 sslsha="sha256"
 

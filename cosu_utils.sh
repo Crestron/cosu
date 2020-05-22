@@ -29,7 +29,7 @@ function valid_ip()
 #      if [[ $? -eq 0 ]]; then echo good; else echo bad; fi
 #   OR
 #      if valid_ip IP_ADDRESS; then echo good; else echo bad; fi
-#{
+{
     local  ip=$1
     local  stat=1
 

@@ -12,7 +12,7 @@ The intent of this project is to be both a tutorial on the use of OpenSSL and Ce
 
 It also may provide some basic needs for developers.
 
-The model is intentially limited to create a single Root Certificate, a single Intermediate Certificate,
+The model is intentionally limited to create a single Root Certificate, a single Intermediate Certificate,
 and a number of device certificates. It is not meant to be full CA management platform.
 
 #To Use:
@@ -21,7 +21,7 @@ and a number of device certificates. It is not meant to be full CA management pl
     a. Edit the fields accordingly - you must set the output folder root.
 2. Optionally create the bulklist.csv with the list of devices for a bulk create.
 3. Run ./cosu.sh (if you see any errors, you probably didn't set the output folder)
-4. You must create the Root and Intermediate Certificates before doing anythings else.
+4. You must create the Root and Intermediate Certificates before doing anything else.
 
 
 When you are done using it you will see the following output structure:
