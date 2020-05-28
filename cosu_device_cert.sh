@@ -152,14 +152,15 @@ into the control system \Sys folder using SFTP
 
 Execute the following commands
 
->move User\intermediate_cert.cer \romdisk\user\cert
+>del \romdisk\user\cert\intermediate.cer
+>move sys\intermediate_cert.cer \romdisk\user\cert
 
 >certificate add intermediate
 >ssl ca 
 
 
 **********************************************
-***** Other Devices (4 Series, NVX, TSW, etc)
+***** Other Devices (NVX, TSW, etc)
 **********************************************
 Please place rootCA_cert.cer, intermediate_cert.cer, webserver_cert.pfx
 into the /User/Cert folder using SFTP (first remove any root_cert.cer that might be present)
