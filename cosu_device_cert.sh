@@ -101,9 +101,6 @@ copy_output(){
         mkdir $device_deploy_folder
     fi
 
-
-
-
     # copy and rename the root certificate
     cp $root_folder/cert.pem $device_deploy_folder/rootCA_cert.cer
 
@@ -113,8 +110,8 @@ copy_output(){
     #copy and rename the device certificate
     cp $device_folder/cert.pem $device_deploy_folder/srv_cert.cer
 
-    #copy the certificate chain
-    cp $signer_folder/chain.pem $device_deploy_folder/chain.cer
+    #copy the certificate chain - loading a chain was deprecated. Individual certs need to be loaded
+    #cp $signer_folder/chain.pem $device_deploy_folder/chain.cer
 
     #unencrypt and rename the private key
     openssl rsa -passin pass:$device_password -in $device_folder/key.pem -out $device_deploy_folder/srv_key.pem
@@ -129,8 +126,10 @@ rootCA_cert.cer may be added to your local certificate store as a trusted certif
 
 **********************************************
 ***** 3 Series Instructions
+***** Firmware 1.601 or higher!!
 **********************************************
-Please place chain.cer, srv_cert.cer and srv_key.pem
+Please place rootCA_cert.cer, intermediate_cert.cer, 
+srv_cert.cer and srv_key.pem
 into the control system \User folder using SFTP
 
 Execute the following commands
@@ -138,7 +137,12 @@ Execute the following commands
 >del \sys\rootCA_cert.cer
 >del \sys\srv_cert.cer
 >del \sys\srv_key.pem
->move User\chain.cer \sys\rootCA_cert.cer
+
+>del \ROMDISK\User\Cert\intermediate_cert.cer
+>move \User\intermediate_cert.cer \ROMDISK\User\Cert\intermediate_cert.cer
+>certificate add intermediate
+
+>move User\rootCA_cert.cer \sys\rootCA_cert.cer
 >move User\srv_cert.cer \sys
 >move User\srv_key.pem \sys
 
