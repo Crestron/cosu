@@ -27,8 +27,10 @@ setup_root(){
     
     if test ! -d $output_folder; then
         mkdir $output_folder
+    fi
+    
+    if test ! -d $root_folder; then
         mkdir $root_folder
-
     fi
 
     if test ! -f $root_folder/index.txt; then
