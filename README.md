@@ -2,7 +2,11 @@
 
 Runs on Linux or Windows Subsystem for Linux
 
-Instructions for installing on Windows 10 https://docs.microsoft.com/en-us/windows/wsl/install-win10
+Instructions for installing on Windows 10 https://docs.microsoft.com/en-us/windows/wsl/install-win10 
+or simply powershell commmand 
+```
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+```
 
 Visual Studio Code can be used as an Editor
 
