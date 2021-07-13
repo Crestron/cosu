@@ -1,0 +1,6 @@
+# insure that this repository is alwasy LF and not CRLF on Windows Service Linux
+ * text eol=lf
+
+# Declare files that will always have CRLF line endings on checkout.
+*.sh text eol=crlf
+*.cnf text eol=crlf
