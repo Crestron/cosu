@@ -2,5 +2,5 @@
  * text eol=lf
 
 # Declare files that will always have CRLF line endings on checkout.
-*.sh text eol=crlf
-*.cnf text eol=crlf
+*.sh text eol=lf
+*.cnf text eol=lf
