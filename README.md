@@ -2,7 +2,14 @@
 
 Runs on Linux or Windows Subsystem for Linux
 
-Instructions for installing on Windows 10 https://docs.microsoft.com/en-us/windows/wsl/install-win10
+Instructions for installing on Windows 10 https://docs.microsoft.com/en-us/windows/wsl/install-win10 
+or simply run the following command in an elevated powershell terminal  
+```
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+```
+or install using Windows features applet
+![Windows features applet](./WSL-GUIInstall.png "Windows features applet")
+
 
 Visual Studio Code can be used as an Editor
 
