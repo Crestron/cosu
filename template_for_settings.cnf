@@ -53,7 +53,7 @@ sslsha="sha256"
 
 sslrootdays="7300"
 sslintdays="3650"
-sslsrvdays="800"
+sslsrvdays="396"
 
 
 
