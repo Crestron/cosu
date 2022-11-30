@@ -113,8 +113,16 @@ copy_output(){
     #copy the certificate chain - loading a chain was deprecated. Individual certs need to be loaded
     #cp $signer_folder/chain.pem $device_deploy_folder/chain.cer
 
+    #check if OpenSSL version is 3.0.0 or newer
+    ossl_version=$(openssl version | sed 's/^.*[^0-9]\([0-9]*\)\.[0-9]*\.[0-9]*.*$/\1/')
+    
     #unencrypt and rename the private key
-    openssl rsa -passin pass:$device_password -in $device_folder/key.pem -out $device_deploy_folder/srv_key.pem
+    #if OpenSSL version is at least 3 include -tradtitional flag to get PKCS#1 cert
+    if [[ 3 > "$ossl_version" ]]; 
+        then openssl rsa -passin pass:$device_password -in $device_folder/key.pem -out $device_deploy_folder/srv_key.pem; 
+        else openssl rsa -passin pass:$device_password -in $device_folder/key.pem -traditional -out $device_deploy_folder/srv_key.pem; 
+    fi
+
 
     #create a PFX File
     openssl pkcs12 -export -passin pass:$device_password -passout pass:$device_password -out $device_deploy_folder/webserver_cert.pfx -inkey $device_folder/key.pem -in $device_folder/cert.pem
@@ -203,10 +211,13 @@ interactive_gen_device_cert(){
     
     echo Ready to sign the device certificate
     read -sp "Please enter the Signing key password: " signer_password
+    echo ""
+    read -sp "Please enter the Device key password: " device_password
 
     gen_device_cert
 
     signer_password=""
+    device_password=""
    
     openssl verify -CAfile $signer_folder/chain.pem $device_folder/cert.pem
 
