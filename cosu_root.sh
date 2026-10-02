@@ -121,14 +121,17 @@ gen_root(){
     write_root_config
 
     echo Generating Key...
-    #openssl $sslkeygen -passout pass:$root_password $sslkeygenparams -out $root_folder/key.pem $sslkeygennumbits
-    openssl genpkey -algorithm $keyalgorithm -pass pass:$root_password $keygenparams -out $root_folder/key.pem
+    # SECURITY: passwords go to openssl via an inline environment variable (-pass env:), never as
+    # a literal on the command line, which every local user can read (ps, /proc/<pid>/cmdline).
+    # The inline VAR=value below puts the password in the environment of this one openssl
+    # process only (readable just by the same user and root) and is not exported.
+    COSU_PASS="$root_password" openssl genpkey -algorithm "$keyalgorithm" -pass env:COSU_PASS $keygenparams -out $root_folder/key.pem
 
 
     echo Done
 
     echo Creating Certificate...
-    openssl req -passin pass:$root_password -config $root_folder/ssl.cnf -key $root_folder/key.pem -new -x509 -days $sslrootdays -$sslsha -extensions v3_ca -out $root_folder/cert.pem
+    COSU_PASS="$root_password" openssl req -passin env:COSU_PASS -config $root_folder/ssl.cnf -key $root_folder/key.pem -new -x509 -days $sslrootdays -$sslsha -extensions v3_ca -out $root_folder/cert.pem
     echo Done
     
     root_password=""
