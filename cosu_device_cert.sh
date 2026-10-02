@@ -119,13 +119,15 @@ copy_output(){
     #unencrypt and rename the private key
     #if OpenSSL version is at least 3 include -tradtitional flag to get PKCS#1 cert
     if [[ 3 > "$ossl_version" ]]; 
-        then openssl rsa -passin pass:$device_password -in $device_folder/key.pem -out $device_deploy_folder/srv_key.pem; 
-        else openssl rsa -passin pass:$device_password -in $device_folder/key.pem -traditional -out $device_deploy_folder/srv_key.pem; 
+        then COSU_PASS="$device_password" openssl rsa -passin env:COSU_PASS -in $device_folder/key.pem -out $device_deploy_folder/srv_key.pem;
+        else COSU_PASS="$device_password" openssl rsa -passin env:COSU_PASS -in $device_folder/key.pem -traditional -out $device_deploy_folder/srv_key.pem; 
     fi
 
 
     #create a PFX File
-    openssl pkcs12 -export -passin pass:$device_password -passout pass:$device_password -out $device_deploy_folder/webserver_cert.pfx -inkey $device_folder/key.pem -in $device_folder/cert.pem
+    # SECURITY: passwords go to openssl via inline environment variables (-passin/-passout env:),
+    # never "pass:<password>", which any local user can read from ps or /proc/<pid>/cmdline.
+    COSU_PASSIN="$device_password" COSU_PASSOUT="$device_password" openssl pkcs12 -export -passin env:COSU_PASSIN -passout env:COSU_PASSOUT -out $device_deploy_folder/webserver_cert.pfx -inkey $device_folder/key.pem -in $device_folder/cert.pem
    
     #write out the user instructions
     cat > $device_deploy_folder/readme.txt << EOL
@@ -196,7 +198,7 @@ gen_device_cert(){
     write_device_cert_config
    
     echo "Creating Certificate..."
-    openssl ca -batch -passin pass:$signer_password -config $device_folder/ssl.cnf -cert $signer_folder/cert.pem -keyfile $signer_folder/key.pem -outdir $device_folder -extensions server_cert -days $sslsrvdays -notext -md $sslsha -in $device_folder/csr.pem -out $device_folder/cert.pem
+    COSU_PASS="$signer_password" openssl ca -batch -passin env:COSU_PASS -config $device_folder/ssl.cnf -cert $signer_folder/cert.pem -keyfile $signer_folder/key.pem -outdir $device_folder -extensions server_cert -days $sslsrvdays -notext -md $sslsha -in $device_folder/csr.pem -out $device_folder/cert.pem
     echo "Done"
     
     copy_output

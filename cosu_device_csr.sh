@@ -64,10 +64,12 @@ gen_device_csr(){
     write_device_csr_config
 
     #generate the key
-    openssl genpkey -algorithm $keyalgorithm -pass pass:$device_password $keygenparams -out $device_folder/key.pem
- 
+    # SECURITY: passwords go to openssl via an inline environment variable (-pass env:), never
+    # "pass:<password>", which any local user can read from ps or /proc/<pid>/cmdline.
+    COSU_PASS="$device_password" openssl genpkey -algorithm "$keyalgorithm" -pass env:COSU_PASS $keygenparams -out $device_folder/key.pem
+
     #echo Now Creating CSR
-    openssl req -passin pass:$device_password -config $device_folder/ssl.cnf -key $device_folder/key.pem -new -$sslsha -out $device_folder/csr.pem
+    COSU_PASS="$device_password" openssl req -passin env:COSU_PASS -config $device_folder/ssl.cnf -key $device_folder/key.pem -new -$sslsha -out $device_folder/csr.pem
 
 }
 

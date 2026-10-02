@@ -118,18 +118,19 @@ gen_signer(){
     #set -o xtrace
 
     echo Generating Key...
-    #openssl $sslkeygen -passout pass:$signer_password $sslkeygenparams -out $signer_folder/key.pem $sslkeygennumbits
-    openssl genpkey -algorithm $keyalgorithm -pass pass:$signer_password $keygenparams -out $signer_folder/key.pem
+    # SECURITY: passwords go to openssl via an inline environment variable (-pass env:), never
+    # "pass:<password>", which any local user can read from ps or /proc/<pid>/cmdline.
+    COSU_PASS="$signer_password" openssl genpkey -algorithm "$keyalgorithm" -pass env:COSU_PASS $keygenparams -out $signer_folder/key.pem
     echo Done
 
     echo Create the signer CSR...
-    openssl req -passin pass:$signer_password -config $signer_folder/ssl.cnf -new -$sslsha -key $signer_folder/key.pem -out $signer_folder/csr.pem
+    COSU_PASS="$signer_password" openssl req -passin env:COSU_PASS -config $signer_folder/ssl.cnf -new -$sslsha -key $signer_folder/key.pem -out $signer_folder/csr.pem
 
     echo Ready to sign the intermediate certificate
     read -sp "Please enter the ROOT key password" root_password
 
     echo Creating Certificate...
-    openssl ca -batch -passin pass:$root_password -config $signer_folder/ssl.cnf -cert $root_folder/cert.pem -keyfile $root_folder/key.pem -outdir $signer_folder -extensions v3_intermediate_ca -days $sslintdays -notext -md $sslsha -in $signer_folder/csr.pem -out $signer_folder/cert.pem
+    COSU_PASS="$root_password" openssl ca -batch -passin env:COSU_PASS -config $signer_folder/ssl.cnf -cert $root_folder/cert.pem -keyfile $root_folder/key.pem -outdir $signer_folder -extensions v3_intermediate_ca -days $sslintdays -notext -md $sslsha -in $signer_folder/csr.pem -out $signer_folder/cert.pem
     echo Done
 
     #set +o xtrace
